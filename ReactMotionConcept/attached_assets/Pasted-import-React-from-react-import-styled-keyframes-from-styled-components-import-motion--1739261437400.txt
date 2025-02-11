@@ -1,0 +1,247 @@
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
+
+const App = () => {
+  return (
+    <Container>
+      {/* Decorative Animated Background Layer (optional) */}
+      <AnimatedGradient />
+
+      {/* Top Right Neon Text */}
+      <TopRightNeonText
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        It's Right! Let's Gangwar the Market.
+      </TopRightNeonText>
+
+      {/* Left Panel for Account Selection */}
+      <LeftPanel
+        initial={{ x: -300 }}
+        animate={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 60 }}
+      >
+        <PanelTitle>Choose Account Type</PanelTitle>
+
+        <AccountOption
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => alert("Dummy Account Selected")}
+        >
+          Dummy Account
+        </AccountOption>
+
+        <AccountOption
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => alert("Real Account Selected")}
+        >
+          Real Account
+        </AccountOption>
+      </LeftPanel>
+
+      {/* Main Entry Button */}
+      <CenterButton
+        whileHover={{ scale: 1.1, rotate: 1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => alert("Entering the App...")}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        Enter the App
+      </CenterButton>
+
+      {/* TradingView Widget */}
+      <TradingViewWidget>
+        <div className="tradingview-widget-container">
+          <div className="tradingview-widget-container__widget"></div>
+          <div className="tradingview-widget-copyright">
+            <a
+              href="https://www.tradingview.com/"
+              rel="noopener nofollow"
+              target="_blank"
+            >
+              <span className="blue-text">Track all markets on TradingView</span>
+            </a>
+          </div>
+          <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js"
+            async
+          >
+            {JSON.stringify({
+              exchanges: ["NSE", "BSE"],
+              dataSource: "India",
+              grouping: "sector",
+              blockSize: "market_cap_basic",
+              blockColor: "change",
+              locale: "en",
+              symbolUrl: "",
+              colorTheme: "dark",
+              hasTopBar: true,
+              isDataSetEnabled: true,
+              isZoomEnabled: true,
+              hasSymbolTooltip: true,
+              isMonoSize: false,
+              width: "100%",
+              height: "100%",
+            })}
+          </script>
+        </div>
+      </TradingViewWidget>
+    </Container>
+  );
+};
+
+export default App;
+
+/* 
+  ========================
+  STYLED COMPONENTS
+  ========================
+*/
+
+/* 1) Container for the entire page */
+const Container = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #121212; /* fallback background */
+  color: #ffffff;
+  overflow: hidden;
+`;
+
+/* 2) Animated Gradient Background
+   Keyframe + a pseudo-element or separate div that moves. */
+const gradientAnimation = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+const AnimatedGradient = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    -45deg,
+    #2c2c54,
+    #474787,
+    #3c40c6,
+    #0fbcf9
+  );
+  background-size: 300% 300%;
+  animation: ${gradientAnimation} 20s ease infinite;
+  opacity: 0.2;
+  z-index: 0;
+`;
+
+/* 3) Neon Text at Top Right */
+const TopRightNeonText = styled(motion.div)`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.8), 0 0 20px rgba(255, 77, 77, 0.6);
+  letter-spacing: 1px;
+  z-index: 10;
+`;
+
+/* 4) Left Panel */
+const LeftPanel = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100vh;
+  background: linear-gradient(155deg, #1e1e1e, #333333);
+  padding: 20px;
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1001; /* Above the gradient */
+`;
+
+const PanelTitle = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.2);
+`;
+
+/* 5) Account Option Buttons inside Left Panel */
+const AccountOption = styled(motion.button)`
+  display: inline-block;
+  margin: 10px 0;
+  padding: 12px 24px;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background-color: #e60000;
+  }
+`;
+
+/* 6) Center Button for Entering the App */
+const CenterButton = styled(motion.button)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 32px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+  outline: none;
+  z-index: 1002;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+/* 7) TradingView Widget Container */
+const TradingViewWidget = styled.div`
+  margin-left: 270px; /* Offset for left panel */
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1; /* behind the left panel, but above gradient */
+  position: relative;
+
+  /* You could also style the embedded widget area if you desire. */
+  .tradingview-widget-container {
+    width: 100%;
+    height: 100%;
+  }
+  .tradingview-widget-container__widget {
+    width: 100%;
+    height: 100%;
+  }
+  .blue-text {
+    color: #1e90ff;
+    font-weight: bold;
+  }
+`;
